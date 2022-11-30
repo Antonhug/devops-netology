@@ -3,20 +3,20 @@
 
 1.  Есть скрипт:
 ---
-a=1  
-b=2  
-c=a+b  
-d=$a+$b  
-e=$(($a+$b))
+	a=1  
+	b=2  
+	c=a+b  
+	d=$a+$b  
+	e=$(($a+$b))	
 
-    Какие значения переменным c,d,e будут присвоены?  Почему?
+Какие значения переменным c,d,e будут присвоены?  Почему?
 
-		$ echo $a
-		1
-		$ echo $b
-		2
-		$ echo $c
-		a+b  
+	$ echo $a
+	1
+	$ echo $b
+	2
+	$ echo $c
+	a+b  
 
 Интерпретатор воспринял выражение "a+b" как строку символов.
 
@@ -32,55 +32,55 @@ e=$(($a+$b))
 
 2. Исправить скрипт:
 ---
-		while ((1==1)  
-		do  
+	while ((1==1)  
+	do  
 		curl https://localhost:4757  
-		if (($? != 0))  
-		then  
+	if (($? != 0))  
+	then  
 		date >> curl.log  
-		fi  
-		done  
+	fi  
+	done  
 
  В первой строке скрипта пропущена закрывающая круглая скобка, в шестой символ дозаписи *>>* хорошо бы заменить на зимвол перезаписи *>*, чтобы бесконтрольно не увеличивать размер файла. Так же можно после шестой строки добавить строку с выходом из скрипта в случае ненулевого значения *$?*.
 
 3.  Необходимо написать скрипт, который проверяет доступность трёх IP: 192.168.0.1, 173.194.222.113, 87.250.250.242 по 80 порту и записывает результат в файл log. Проверять доступность необходимо пять раз для каждого узла.
 ---
 
-		rm -f curl.log  
-		for host in 192.168.0.1 173.194.222.113 87.250.250.242  
-		do  
-		 for i in {1..5}  
-		 do  
-		  echo -n $i" "$host >> curl.log  
-		  curl -s $host  
-		  if (($? != 0))  
-		  then  
-		   echo " failed" >> curl.log  
-		  else  
-		   echo " success" >> curl.log  
-		  fi  
-		 done  
-		done  
+	rm -f curl.log  
+	for host in 192.168.0.1 173.194.222.113 87.250.250.242  
+	do  
+	 for i in {1..5}  
+	 do  
+	  echo -n $i" "$host >> curl.log  
+	  curl -s $host  
+	  if (($? != 0))  
+	  then  
+	   echo " failed" >> curl.log  
+	  else  
+	   echo " success" >> curl.log  
+	  fi  
+	 done  
+	done  
 
 4. Необходимо дописать скрипт из предыдущего задания так, чтобы он выполнялся до тех пор, пока один из узлов не окажется недоступным. Если любой из узлов недоступен - IP этого узла пишется в файл error, скрипт прерывается.
 ---
 
-rm -f curl.log  
-hosts=(192.168.0.1 173.194.222.113 87.250.250.242)  
-for host in ${hosts[@]}  
-do  
- for i in {1..5}  
- do  
-  echo -n $i" "$host >> curl.log  
-  curl -s $host  
-  if (($? != 0))  
-  then  
-   echo " failed" >> curl.log  
-   echo $host" failed" > errors  
-   exit 1  
-  else  
-   echo " success" >> curl.log  
-  fi  
- done  
-done  
-
+	rm -f curl.log  
+	hosts=(192.168.0.1 173.194.222.113 87.250.250.242)  
+	for host in ${hosts[@]}  
+	do  
+	 for i in {1..5}  
+	 do  
+	  echo -n $i" "$host >> curl.log  
+	  curl -s $host  
+	  if (($? != 0))  
+	  then  
+	   echo " failed" >> curl.log  
+	   echo $host" failed" > errors  
+	   exit 1  
+	  else  
+	   echo " success" >> curl.log  
+	  fi  
+	 done  
+	done  
+	
